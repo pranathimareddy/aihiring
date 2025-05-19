@@ -84,6 +84,17 @@ Each prompt is designed to maintain context and provide clear guidance to the mo
 4. Add resume parsing capabilities
 5. Implement candidate scoring system
 
+## Deployment
+
+1. Go to [Streamlit Sharing](https://share.streamlit.io/)
+2. Click "New App"
+3. Connect your GitHub account
+4. Select this repository (pranathimareddy/aihiring)
+5. Choose the main branch
+6. Click "Deploy"
+
+The app will be deployed and accessible via a public URL.
+
 ## License
 
 This project is for educational purposes only. All rights reserved by TalentScout.
