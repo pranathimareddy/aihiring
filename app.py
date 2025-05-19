@@ -1,17 +1,20 @@
 import streamlit as st
 import requests
 import os
-from dotenv import load_dotenv
 from typing import Dict, List
 import pandas as pd
 import json
 
-# Load environment variables
-load_dotenv()
-
 # API configuration
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
-API_KEY = os.getenv("GEMINI_API_KEY")
+
+# Get API key from environment variable
+API_KEY = os.environ.get("GEMINI_API_KEY")
+
+if not API_KEY:
+    st.error("API key not found. Please set the GEMINI_API_KEY environment variable.")
+    st.stop()
+
 HEADERS = {
     'Content-Type': 'application/json',
     'Authorization': f'Bearer {API_KEY}'
@@ -19,6 +22,7 @@ HEADERS = {
 
 def generate_content(prompt: str) -> str:
     try:
+        st.write("Generating content...")
         response = requests.post(
             API_URL,
             headers=HEADERS,
@@ -35,8 +39,12 @@ def generate_content(prompt: str) -> str:
         if 'candidates' in result and len(result['candidates']) > 0:
             return result['candidates'][0]['content']['parts'][0]['text']
         return "Error: No content generated"
+    except requests.exceptions.RequestException as e:
+        st.error(f"API Error: {str(e)}")
+        return "Error generating content. Please check the API key and try again."
     except Exception as e:
-        return f"Error generating content: {str(e)}"
+        st.error(f"Unexpected Error: {str(e)}")
+        return "Error generating content. Please try again later."
 
 class Candidate:
     def __init__(self):
